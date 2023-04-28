@@ -1,0 +1,8 @@
+{
+  "jupyter.lab.shortcuts": [],
+  "title": "astronomy-extension",
+  "description": "astronomy-extension settings.",
+  "type": "object",
+  "properties": {},
+  "additionalProperties": false
+}

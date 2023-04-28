@@ -1,0 +1,5 @@
+{
+  "packageManager": "python",
+  "packageName": "astronomy_extension",
+  "uninstallInstructions": "Use your Python package manager (pip, conda, etc.) to uninstall the package astronomy_extension"
+}
