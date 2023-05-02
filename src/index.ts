@@ -8,6 +8,8 @@ import { ILauncher } from '@jupyterlab/launcher';
 
 import { ICommandPalette, MainAreaWidget, WidgetTracker} from '@jupyterlab/apputils';
 import { Widget } from '@lumino/widgets';
+import { reactIcon } from '@jupyterlab/ui-components';
+
 
 interface APODResponse {
   copyright: string;
@@ -120,6 +122,7 @@ function activate(app: JupyterFrontEnd, palette: ICommandPalette, launcher: ILau
         widget = new MainAreaWidget({content});
         widget.id = 'apod-jupyterlab';
         widget.title.label = 'Astronomy Picture';
+        widget.title.icon = reactIcon;
         widget.title.closable = true;
       }
       if (!tracker.has(widget)) {
