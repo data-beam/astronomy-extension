@@ -4,7 +4,9 @@ import {
   JupyterFrontEndPlugin
 } from '@jupyterlab/application';
 
-import { ICommandPalette, MainAreaWidget, WidgetTracker } from '@jupyterlab/apputils';
+import { ILauncher } from '@jupyterlab/launcher';
+
+import { ICommandPalette, MainAreaWidget, WidgetTracker} from '@jupyterlab/apputils';
 import { Widget } from '@lumino/widgets';
 
 interface APODResponse {
@@ -25,6 +27,15 @@ class APODWidget extends Widget {
 
     this.addClass('my-apodWidget');
 
+    this.refresh = document.createElement('button');
+    this.node.appendChild(this.refresh);
+
+    this.refresh.textContent = "Refresh Image";
+    this.refresh.className = 'my-button';
+    this.refresh.onclick = async () => {
+      await this.updateAPODImage();
+    }
+
     // Add an image element to the panel
     this.img = document.createElement('img');
     this.node.appendChild(this.img);
@@ -43,6 +54,10 @@ class APODWidget extends Widget {
   * The summary text element associated with the widget.
   */
   readonly summary: HTMLParagraphElement;
+  /**
+  * Then refresh button associated with the wdget.
+  */
+  readonly refresh: HTMLButtonElement;
 
   /**
   * Handle update requests for the widget.
@@ -89,7 +104,7 @@ class APODWidget extends Widget {
 /**
 * Activate the APOD widget extension.
 */
-function activate(app: JupyterFrontEnd, palette: ICommandPalette, restorer: ILayoutRestorer | null) {
+function activate(app: JupyterFrontEnd, palette: ICommandPalette, launcher: ILauncher, restorer: ILayoutRestorer | null) {
   console.log('JupyterLab extension jupyterlab_apod is activated!');
 
   // Declare a widget variable
@@ -135,6 +150,14 @@ function activate(app: JupyterFrontEnd, palette: ICommandPalette, restorer: ILay
       name: () => 'apod'
     });
   }
+
+  if (launcher) {
+    launcher.add({
+      command,
+      category: 'My Project',
+      rank: 1
+    })
+  }
 }
 /**
  * Initialization data for the astronomy-extension extension.
@@ -142,7 +165,7 @@ function activate(app: JupyterFrontEnd, palette: ICommandPalette, restorer: ILay
 const plugin: JupyterFrontEndPlugin<void> = {
   id: 'astronomy-extension:plugin',
   autoStart: true,
-  requires: [ICommandPalette],
+  requires: [ICommandPalette, ILauncher],
   optional: [ILayoutRestorer],
   activate: activate
 };
